@@ -13,7 +13,7 @@ namespace GeigerPublisher.Values
 
         public override string ToString()
         {
-            return "CPS, " + CPS + ", CPM, " + CPM + ", uSv/hr, " + Radiation + ", " + Mode.ToString("F");
+            return $"CPS, { CPS }, CPM, { CPM }, uSv/hr, { Radiation }, { Mode.ToString("F") }";
         }
     }
 }
