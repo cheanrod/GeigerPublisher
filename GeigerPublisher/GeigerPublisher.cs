@@ -17,10 +17,10 @@ namespace GeigerPublisher
 
     class MQTTPublisher : IGeigerPublisher
     {
-        static MqttClient _client;
-        const string MqttTopic = "geigercounter/values";
-        const int PublishIntervall = 60;
-        DateTime _lastPublish;
+        private MqttClient _client;
+        private const string MqttTopic = "geigercounter/values";
+        private const int PublishIntervall = 60;
+        private DateTime _lastPublish;
 
         public MQTTPublisher(string server)
         {
