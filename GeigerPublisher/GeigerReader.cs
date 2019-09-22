@@ -33,7 +33,7 @@ namespace GeigerPublisher
                 {
                     String result;
                     result = await reader.ReadLineAsync();
-                    Console.WriteLine("Line contains: " + result);
+                    Console.WriteLine($"Line contains: { result }");
                     returnLine(result);
                 }
             }

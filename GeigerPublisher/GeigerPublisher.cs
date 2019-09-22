@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GeigerPublisher.Values;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
+using shortid;
 
 namespace GeigerPublisher
 {
@@ -24,8 +25,8 @@ namespace GeigerPublisher
         public MQTTPublisher(string server)
         {
             _lastPublish = DateTime.MinValue;
-            var clientId = "geigercounter-" + Guid.NewGuid().ToString().Split("-")[4];
-            Console.WriteLine("Connection to MQTT broker: " + server + ":1883 as clientID: " + clientId);
+            var clientId = $"geigercounter-{ ShortId.Generate(true, false).ToLower() } ";
+            Console.WriteLine($"Connection to MQTT broker: { server }:1883 as clientID: { clientId }");
             _client = new MqttClient(server);
             _client.Connect(clientId);
         }
@@ -50,7 +51,7 @@ namespace GeigerPublisher
             }
             catch (FormatException e)
             {
-                Console.WriteLine("Cannot convert reading: " + e);
+                Console.WriteLine($"Cannot convert reading: { e }");
                 return Task.CompletedTask;
             }
             _lastPublish = DateTime.Now;
