@@ -31,7 +31,7 @@ namespace GeigerPublisher
             _container.RegisterInstance<IGeigerPublisher>(new MQTTPublisher(args[1]));
             _publisher = _container.Resolve<IGeigerPublisher>();
 
-            _container.RegisterInstance<IGeigerReader>(new InfinityReader(_source.Token));
+            _container.RegisterInstance<IGeigerReader>(new SerialReader(args[0], _source.Token));
             _reader = _container.Resolve<IGeigerReader>();
 
             await _publisher.Connect();
