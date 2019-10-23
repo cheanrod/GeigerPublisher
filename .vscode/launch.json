@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/GeigerPublisher/bin/Debug/netcoreapp2.2/GeigerPublisher.dll",
+            "program": "${workspaceFolder}/GeigerPublisher/bin/Debug/netcoreapp3.0/GeigerPublisher.dll",
             "args": ["/dev/tty.usbserial-MNBRFB", "192.168.178.45"],
             "cwd": "${workspaceFolder}/GeigerPublisher",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console

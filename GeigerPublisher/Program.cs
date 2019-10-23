@@ -34,6 +34,7 @@ namespace GeigerPublisher
             _container.RegisterInstance<IGeigerReader>(new SerialReader(args[0], _source.Token));
             _reader = _container.Resolve<IGeigerReader>();
 
+            await _publisher.Connect();
             await _reader.StartRead(publishReading);
 
             _publisher?.Disconnect();
