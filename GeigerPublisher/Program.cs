@@ -28,7 +28,7 @@ namespace GeigerPublisher
             };
 
             _container = new UnityContainer();
-            _container.RegisterInstance<IGeigerPublisher>(new MQTTPublisher(args[1]));
+            _container.RegisterInstance<IGeigerPublisher>(new MQTTPublisher(args[1], _source.Token));
             _publisher = _container.Resolve<IGeigerPublisher>();
 
             _container.RegisterInstance<IGeigerReader>(new SerialReader(args[0], _source.Token));

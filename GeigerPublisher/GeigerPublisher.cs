@@ -23,14 +23,16 @@ namespace GeigerPublisher
     class MQTTPublisher : IGeigerPublisher
     {
         private IMqttClient _client;
-        private string _server;
+        private readonly CancellationToken _token;
+        private readonly string _server;
         private const string MqttTopic = "geigercounter/status";
         private const int PublishIntervall = 60;
         private readonly IList<GeigerValues> _geigerValues = new List<GeigerValues>();
         private DateTime _lastPublish;
 
-        public MQTTPublisher(string server)
+        public MQTTPublisher(string server, CancellationToken token)
         {
+            _token = token;
             _server = server;
             _lastPublish = DateTime.MinValue;
         }
@@ -54,7 +56,7 @@ namespace GeigerPublisher
             
             setDisconnectHandler(options);
             
-            await _client.ConnectAsync(options, CancellationToken.None);
+            await _client.ConnectAsync(options, _token);
             await _client.PublishAsync(new MqttApplicationMessageBuilder()
                 .WithTopic("geigercounter/connected")
                 .WithPayload("1")
@@ -66,16 +68,19 @@ namespace GeigerPublisher
         {
             _client.UseDisconnectedHandler(async e =>
             {
-                Console.WriteLine("### DISCONNECTED FROM SERVER ###");
-                await Task.Delay(TimeSpan.FromSeconds(5));
+                if (!_token.IsCancellationRequested)
+                {
+                    Console.WriteLine("### DISCONNECTED FROM SERVER ###");
+                    await Task.Delay(TimeSpan.FromSeconds(5));
 
-                try
-                {
-                    await _client.ConnectAsync(options, CancellationToken.None);
-                }
-                catch
-                {
-                    Console.WriteLine("### RECONNECTING FAILED ###");
+                    try
+                    {
+                        await _client.ConnectAsync(options, CancellationToken.None);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("### RECONNECTING FAILED ###");
+                    }
                 }
             });
         }
