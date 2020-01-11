@@ -1,6 +1,9 @@
 using System;
 using NUnit.Framework;
 using GeigerPublisher.Values;
+using System.Collections.Generic;
+using System.Linq;
+using System.Globalization;
 
 namespace GeigerPublisher.Tests
 {
@@ -75,6 +78,30 @@ namespace GeigerPublisher.Tests
 
             // Test
             var result = GeigerValuesConverter.ConvertToJson(value);
+
+            // Verification
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [Test]
+        public void ConvertJSONMessage()
+        {
+            CultureInfo culture = new CultureInfo("en-US");
+            var now = DateTime.Now;
+            var timeSpan = (now - new DateTime(1970, 1, 1, 0, 0, 0).ToLocalTime());
+            var timestamp = (long)timeSpan.TotalMilliseconds;
+            var values = new List<double>();
+            for (int i = 0; i < 10; i++)
+            {
+                values.Add(i);
+            }
+            var average = values.Average();
+            
+            var expected = $"{{\"ts\":{timestamp},\"val\":{average.ToString(culture)}}}";
+
+            // Test
+            var result = GeigerValuesConverter.ConvertToJson(now, values);
 
             // Verification
             Assert.That(result, Is.Not.Null);

@@ -8,7 +8,7 @@ namespace GeigerPublisher
 {
     interface IGeigerReader
     {
-        Task StartRead(Action<string> returnLine);
+        Task StartRead(Action returnConnected, Action<string> returnLine);
     }
 
     class SerialReader : IGeigerReader
@@ -24,9 +24,10 @@ namespace GeigerPublisher
             _serialPort.BaudRate = 9600;
         }
 
-        public async Task StartRead(Action<string> returnLine)
+        public async Task StartRead(Action returnConnected, Action<string> returnLine)
         {
             _serialPort.Open();
+            returnConnected();
             using (StreamReader reader = new StreamReader(_serialPort.BaseStream, System.Text.Encoding.ASCII))
             {
                 while (!_token.IsCancellationRequested)
@@ -53,8 +54,9 @@ namespace GeigerPublisher
             _token = token;
         }
 
-        public async Task StartRead(Action<string> returnLine)
+        public async Task StartRead(Action returnConnected, Action<string> returnLine)
         {
+            returnConnected();
             while (!_token.IsCancellationRequested)
             {
                 await Task.Delay(5000);

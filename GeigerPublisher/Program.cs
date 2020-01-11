@@ -32,18 +32,24 @@ namespace GeigerPublisher
             _publisher = _container.Resolve<IGeigerPublisher>();
 
             _container.RegisterInstance<IGeigerReader>(new SerialReader(args[0], _source.Token));
+            //_container.RegisterInstance<IGeigerReader>(new InfinityReader(_source.Token));
             _reader = _container.Resolve<IGeigerReader>();
 
             await _publisher.Connect();
-            await _reader.StartRead(publishReading);
+            await _reader.StartRead(publishConnected, publishReading);
 
             _publisher?.Disconnect();
             Console.WriteLine("Geigerpublisher exiting...");
         }
 
+        private static void publishConnected()
+        {
+            _publisher.PublishConnectedMessage();
+        }
+
         private static void publishReading(string reading)
         {
-            _publisher.publishReading(reading);
+            _publisher.PublishReading(reading);
         }
 
         static void UnhandledExceptionTrapper(object sender, UnhandledExceptionEventArgs e)

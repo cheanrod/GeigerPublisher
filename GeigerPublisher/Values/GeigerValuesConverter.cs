@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace GeigerPublisher.Values
@@ -35,6 +37,15 @@ namespace GeigerPublisher.Values
         public static string ConvertToJson(GeigerValues geigerValues)
         {
             return JsonConvert.SerializeObject(geigerValues);
+        }
+
+        public static string ConvertToJson(DateTime timestamp, IEnumerable<double> radiationValues)
+        {
+            var geigerMessage = new GeigerMessage() {
+                Timestamp = timestamp,
+                Radiation = radiationValues.Average()
+            };
+            return JsonConvert.SerializeObject(geigerMessage);
         }
     }
 }
