@@ -1,6 +1,7 @@
 # GeigerPublisher
 
 ![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/cheanrod/GeigerPublisher?include_prereleases)
+[![docker pulls][badge_docker]][link_docker]
 [![mqtt-smarthome](https://img.shields.io/badge/mqtt-smarthome-blue.svg)](https://github.com/mqtt-smarthome/mqtt-smarthome)
 [![Build Status](https://travis-ci.com/cheanrod/GeigerPublisher.svg?branch=develop)](https://travis-ci.com/cheanrod/GeigerPublisher)
 ![GitHub](https://img.shields.io/github/license/cheanrod/GeigerPublisher)
@@ -14,3 +15,6 @@ GeigerPublisher <serial port> <broker hostname>
 ```
 
 _broker hostname_ can be either IP address or hostname.
+
+[badge_docker]: https://img.shields.io/docker/pulls/cheanrod/geigerpublisher
+[link_docker]: https://hub.docker.com/r/cheanrod/geigerpublisher
