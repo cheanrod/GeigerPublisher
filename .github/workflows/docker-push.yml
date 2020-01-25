@@ -1,0 +1,63 @@
+name: Docker build and push
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build_and_push:
+    name: Build and push images
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v1
+      -
+        name: Docker login
+        run:
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      -
+        name: Run Build amd64
+        run:
+          docker build -t cheanrod/geigerpublisher:amd64 -f Dockerfile .
+      -
+        name: Run Build arm32v7
+        run:
+          docker build -t cheanrod/geigerpublisher:arm32v7 --build-arg DOTNET_RUNTIME=linux-arm \
+            --build-arg IMAGE_TAG=3.1-buster-slim-arm32v7 -f Dockerfile .
+      -
+        name: Run Build arm64v8
+        run:
+          docker build -t cheanrod/geigerpublisher:arm64v8 --build-arg DOTNET_RUNTIME=linux-arm64 \
+            --build-arg IMAGE_TAG=3.1-buster-slim-arm64v8 -f Dockerfile .
+      -
+        name: Push amd64
+        run:
+          docker push cheanrod/geigerpublisher:amd64
+      -
+        name: Push arm32v7
+        run:
+          docker push cheanrod/geigerpublisher:arm32v7
+      -
+        name: Push arm64v8
+        run:
+          docker push cheanrod/geigerpublisher:arm64v8
+      -
+        name: Create manifest
+        run:
+          docker manifest create --amend cheanrod/geigerpublisher:latest cheanrod/geigerpublisher:amd64 \
+            cheanrod/geigerpublisher:arm32v7 cheanrod/geigerpublisher:arm64v8
+      -
+        name: Manifest annotate arm32v7
+        run:
+          docker manifest annotate cheanrod/geigerpublisher:latest cheanrod/geigerpublisher:arm32v7 \
+            --os linux --arch arm --variant v7
+      -
+        name: Manifest annotate arm64v8
+        run:
+          docker manifest annotate cheanrod/geigerpublisher:latest cheanrod/geigerpublisher:arm64v8 \
+            --os linux --arch arm64 --variant v8 
+      -
+        name: Manifest push
+        run:
+          docker manifest push --purge cheanrod/geigerpublisher:latest
