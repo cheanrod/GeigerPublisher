@@ -89,7 +89,7 @@ namespace GeigerPublisher.Tests
         {
             CultureInfo culture = new CultureInfo("en-US");
             var now = DateTime.Now;
-            var timeSpan = (now - new DateTime(1970, 1, 1, 0, 0, 0).ToLocalTime());
+            var timeSpan = now.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             var timestamp = (long)timeSpan.TotalMilliseconds;
             var values = new List<double>();
             for (int i = 0; i < 10; i++)
