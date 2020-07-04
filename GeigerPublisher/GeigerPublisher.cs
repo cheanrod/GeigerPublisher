@@ -8,6 +8,7 @@ using MQTTnet.Client.Options;
 using MQTTnet.Client;
 using System.Threading;
 using System.Collections.Generic;
+using shortid.Configuration;
 
 namespace GeigerPublisher
 {
@@ -39,7 +40,11 @@ namespace GeigerPublisher
 
         public async Task Connect()
         {
-            var clientId = $"geigercounter-{ ShortId.Generate(true, false).ToLower() } ";
+            var idOptions = new GenerationOptions {
+                UseNumbers = true,
+                UseSpecialCharacters = false
+            };
+            var clientId = $"geigercounter-{ ShortId.Generate(idOptions).ToLower() } ";
             Console.WriteLine($"Connection to MQTT broker: { _server }:1883 as clientID: { clientId }");
 
             var factory = new MqttFactory();
