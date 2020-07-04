@@ -1,6 +1,6 @@
-MIT License
+# MIT License
 
-Copyright (c) 2019 Sven Werner
+Copyright (c) 2019-2020 Sven Werner
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
