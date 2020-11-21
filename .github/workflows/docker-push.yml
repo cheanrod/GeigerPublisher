@@ -23,13 +23,11 @@ jobs:
       -
         name: Run Build arm32v7
         run: >
-          docker build -t cheanrod/geigerpublisher:arm32v7 --build-arg DOTNET_RUNTIME=linux-arm
-            --build-arg IMAGE_TAG=3.1-buster-slim-arm32v7 -f Dockerfile .
+          docker build -t cheanrod/geigerpublisher:arm32v7 --build-arg DOTNET_RUNTIME=linux-arm --build-arg IMAGE_TAG=3.1-buster-slim-arm32v7 -f Dockerfile .
       -
         name: Run Build arm64v8
         run: >
-          docker build -t cheanrod/geigerpublisher:arm64v8 --build-arg DOTNET_RUNTIME=linux-arm64
-            --build-arg IMAGE_TAG=3.1-buster-slim-arm64v8 -f Dockerfile .
+          docker build -t cheanrod/geigerpublisher:arm64v8 --build-arg DOTNET_RUNTIME=linux-arm64 --build-arg IMAGE_TAG=3.1-buster-slim-arm64v8 -f Dockerfile .
       -
         name: Push amd64
         run:
@@ -45,18 +43,15 @@ jobs:
       -
         name: Create manifest
         run: >
-          docker manifest create --amend cheanrod/geigerpublisher:latest cheanrod/geigerpublisher:amd64
-            cheanrod/geigerpublisher:arm32v7 cheanrod/geigerpublisher:arm64v8
+          docker manifest create --amend cheanrod/geigerpublisher:latest cheanrod/geigerpublisher:amd64 cheanrod/geigerpublisher:arm32v7 cheanrod/geigerpublisher:arm64v8
       -
         name: Manifest annotate arm32v7
         run: >
-          docker manifest annotate cheanrod/geigerpublisher:latest cheanrod/geigerpublisher:arm32v7
-            --os linux --arch arm --variant v7
+          docker manifest annotate cheanrod/geigerpublisher:latest cheanrod/geigerpublisher:arm32v7 --os linux --arch arm --variant v7
       -
         name: Manifest annotate arm64v8
         run: >
-          docker manifest annotate cheanrod/geigerpublisher:latest cheanrod/geigerpublisher:arm64v8
-            --os linux --arch arm64 --variant v8 
+          docker manifest annotate cheanrod/geigerpublisher:latest cheanrod/geigerpublisher:arm64v8 --os linux --arch arm64 --variant v8 
       -
         name: Manifest push
         run:
