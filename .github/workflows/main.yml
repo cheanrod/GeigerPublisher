@@ -11,7 +11,7 @@ jobs:
     name: Lint files
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - name: Markdown Linting Action
         uses: avto-dev/markdown-lint@v1
         with:
@@ -21,7 +21,7 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.3.4
       - uses: actions/setup-dotnet@v1.8.0
         with:
           dotnet-version: "5.0.x" # SDK Version to use.
